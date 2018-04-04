@@ -32,7 +32,15 @@ public class FishTales2 {
 				myTank.add(new Whale(myTank, "Dory"));
 			} else if (StdDraw.isKeyPressed(70)) {
 				System.out.println("Food");
-				myTank.add(new Food(myTank, myTank.getWidth(), StdRandom.uniform((int)myTank.getLength())));
+				while(StdDraw.isKeyPressed(70)) {
+					
+				}
+				for (int i = 0; i < 6; i ++) {
+					myTank.add(new Food(myTank, myTank.getWidth(), StdRandom.uniform((int)myTank.getLength())));
+					if (i%5 == 0) {
+						myTank.add(new Poison(myTank, myTank.getWidth(), StdRandom.uniform((int)myTank.getLength())));
+					}
+				}
 			} else if (StdDraw.isKeyPressed(67)) {
 				System.out.println("Clean the Tank");
 				myTank.cleanTheTank();

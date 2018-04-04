@@ -6,9 +6,9 @@ public class Goldfish extends Fish{
 		this.maxSpeed = 3;
 		this.maxAge = 20000;
 		this.maxSize = 30; 
-		this.size = StdRandom.gaussian(this.maxSize/4, 1);
-		this.xVel = StdRandom.gaussian(this.maxSpeed, 1);
-		this.yVel = StdRandom.gaussian(this.maxSpeed, 1);
+		this.size = StdRandom.gaussian(this.maxSize/3, 1);
+		this.xVel = StdRandom.gaussian(this.maxSpeed/2, 1);
+		this.yVel = StdRandom.gaussian(this.maxSpeed/2, 1);
 		this.fillColor = new Color (StdRandom.uniform(50)+205, StdRandom.uniform(100)+150, StdRandom.uniform(100));
 		this.outlineColor = StdDraw.YELLOW;
 	}
@@ -16,17 +16,22 @@ public class Goldfish extends Fish{
 	boolean tryToEat(Tankable t) {
 		if (this.isDead() == false) {
 			if (t instanceof Food) {
-				this.size += t.getSize()*0.5;
+				this.size += t.getSize()*0.05;
 				this.tank.remove(t);
 				return true;
 			} else if (t instanceof Poison) {
-				this.size -= t.getSize()*0.5;
+				this.size -= t.getSize()*0.05;
 				this.tank.remove(t);
 				return true;
-			} else if (t instanceof Goldfish) {
-				this.trytoBreed();
-				this.xVel *=-1; this.yVel *= -1;
-				return false;
+			} else if (t instanceof Goldfish || t instanceof Toroidal) {
+				//tank.add(new Bubble(tank, this.xPos, this.yPos-5));
+				this.changeDirection();
+				t.changeDirection();
+				this.xPos += this.xVel;
+				this.yPos += this.yVel;
+				boolean result1 = this.trytoBreed();
+				if (result1) {System.out.println("bred");}
+				return true;
 			} else {
 				return false;
 			}
@@ -36,10 +41,11 @@ public class Goldfish extends Fish{
 	}
 
 	boolean trytoBreed() {
-		double chance = StdRandom.uniform(0.0, 1.0);
-		System.out.println(chance);
-		if (chance < 0.1 && chance >0.05) {
-			tank.add(new Goldfish(tank, "Dory"));
+		double chance = StdRandom.uniform(21);
+		if (chance == 5) {
+			System.out.println(chance);
+			Goldfish kid = new Goldfish(tank, "Dory");
+			tank.add(kid);
 			return true;
 		} else {
 			return false;
@@ -48,19 +54,11 @@ public class Goldfish extends Fish{
 	
 	void move() {
 		if (this.isDead() == false) {
-			if (this.xPos> tank.getLength() || this.xPos < 0) {
-				xVel *= -(StdRandom.uniform(0.5,1.25));
-			} else if (this.yPos> tank.getWidth() || this.yPos < 0) {
-				yVel *= -(StdRandom.uniform(0.5,1.25));;
-			}
+			this.bounce();
 			this.xPos += this.xVel;
 			this.yPos += this.yVel;
 		} else {
-			this.xVel = 0;
-			this.yVel = Math.abs(this.yVel);
-			if (this.yPos < tank.getWidth()) {
-				this.yPos += this.yVel;
-			}
+			this.deadMovement();
 		}
 	}
 }

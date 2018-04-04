@@ -5,10 +5,10 @@ public class Food extends Pellet{
 		this.outlineColor= StdDraw.GREEN;
 	}
 	public boolean isDead() {
-		if (this.age< this.maxAge) {
-			return false;
-		} else {
+		if (this.age> this.maxAge && this.yPos ==0) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 }

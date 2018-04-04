@@ -4,7 +4,7 @@ public class Whale extends Fish{
 		this.maxSpeed = 1;
 		this.maxAge = 30000;
 		this.maxSize = 100; 
-		this.size = StdRandom.gaussian(this.maxSize/4, 1);
+		this.size = StdRandom.gaussian(this.maxSize/3, 1);
 		this.xVel = StdRandom.gaussian(this.maxSpeed, 1);
 		this.yVel = 0;
 		this.fillColor = StdDraw.GRAY;
@@ -13,24 +13,32 @@ public class Whale extends Fish{
 	boolean tryToEat(Tankable t) {
 		if (this.isDead() == false) {
 			if (t instanceof Food) {
-				this.size += t.getSize()*0.5;
+				this.size += t.getSize()*0.05;
 				this.tank.remove(t);
 				return true;
 			} else if (t instanceof Poison) {
-				this.size -= t.getSize()*0.5;
+				this.size -= t.getSize()*0.05;
 				this.tank.remove(t);
 				return true;
 			} else if (t instanceof Goldfish) {
-				this.size += t.getSize()*0.5;
+				this.size += t.getSize()*0.05;
 				this.tank.remove(t);
 				return true;
 			} else if (t instanceof Piranha) {
-				this.size += t.getSize()*0.5;
-				this.tank.remove(t);
-				return true;
+				if (t.getSize() > this.size) {
+					return false; 
+				} else{ 
+					this.size += t.getSize()*0.05;
+					this.tank.remove(t);
+					return true;
+				}
 			} else if (t instanceof Whale) {
-				this.xVel *=-1; this.yVel *= -1;
-				return false;
+				// tank.add(new Bubble(tank, this.xPos, this.yPos-5));
+				this.changeDirection();
+				t.changeDirection();
+				this.xPos += this.xVel;
+				this.yPos += this.yVel;
+				return true;
 			} else {
 				return false;
 			}
@@ -41,16 +49,10 @@ public class Whale extends Fish{
 
 	void move() {
 		if (this.isDead() == false) {
-			if (this.xPos> tank.getLength() || this.xPos < 0) {
-				xVel *= -(StdRandom.uniform(0.5,1.2));;
-			}
+			this.bounce();
 			this.xPos += this.xVel;
 		} else {
-			this.xVel = 0;
-			this.yVel = 2;
-			if (this.yPos < tank.getWidth()) {
-				this.yPos += this.yVel;
-			}
+			this.deadMovement();
 		}
 	}
 }

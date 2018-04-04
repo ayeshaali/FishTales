@@ -25,11 +25,7 @@ public class Toroidal extends Goldfish{
 			this.xPos += this.xVel;
 			this.yPos += this.yVel;
 		} else {
-			this.xVel = 0;
-			this.yVel = Math.abs(this.yVel);
-			if (this.yPos < tank.getWidth()) {
-				this.yPos += this.yVel;
-			}
+			this.deadMovement();
 		}
 	}
 }

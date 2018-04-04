@@ -5,7 +5,10 @@ public class Poison extends Pellet{
 		this.outlineColor= StdDraw.RED;
 	}
 	public boolean isDead() {
-		boolean result = false;
-		return result;
+		if (this.age> this.maxAge && this.yPos ==0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

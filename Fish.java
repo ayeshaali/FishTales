@@ -31,6 +31,32 @@ public abstract class Fish implements Tankable{
 	private void show() {
 		StdDraw.setPenColor(this.fillColor);
 		StdDraw.filledCircle(this.xPos, this.yPos, Math.abs(this.size));
+		if(xVel>0 && yVel>=0){
+			StdDraw.setPenColor(StdDraw.WHITE);
+			StdDraw.filledCircle(this.xPos+this.size/4,this.yPos+this.size/4,this.size/5);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.filledCircle(this.xPos+this.size/4,this.yPos+this.size/4,this.size/7);
+		} else if(xVel<0 && yVel>=0){
+			StdDraw.setPenColor(StdDraw.WHITE);
+			StdDraw.filledCircle(this.xPos-this.size/4,this.yPos+this.size/4,this.size/5);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.filledCircle(this.xPos-this.size/4,this.yPos+this.size/4,this.size/7);
+		} else if(xVel<0 && yVel<=0){
+			StdDraw.setPenColor(StdDraw.WHITE);
+			StdDraw.filledCircle(this.xPos-this.size/4,this.yPos-this.size/4,this.size/5);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.filledCircle(this.xPos-this.size/4,this.yPos-this.size/4,this.size/7);
+		} else if(xVel>0 && yVel<=0){
+			StdDraw.setPenColor(StdDraw.WHITE);
+			StdDraw.filledCircle(this.xPos+this.size/4,this.yPos-this.size/4,this.size/5);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.filledCircle(this.xPos+this.size/4,this.yPos-this.size/4,this.size/7);
+		} else if(xVel == 0 && yVel>=0){
+			StdDraw.setPenColor(StdDraw.WHITE);
+			StdDraw.filledCircle(this.xPos,this.yPos-this.size/4,this.size/5);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.filledCircle(this.xPos,this.yPos-this.size/4,this.size/7);
+		}
 	}
 
 	public double getDistance(Tankable t) {
@@ -41,7 +67,7 @@ public abstract class Fish implements Tankable{
 	}
 
 	public boolean hasCollision(Tankable t) {
-		if (this.getDistance(t) < ((this.size+t.getSize())/2)) {
+		if (this.getDistance(t) < ((this.size+t.getSize())/2) ) {
 			boolean result = this.tryToEat(t); 
 			return result;
 		} else {
@@ -60,6 +86,26 @@ public abstract class Fish implements Tankable{
 	public void changeDirection() {
 		this.xVel *=-1;
 		this.yVel *=-1;
+	}
+
+	public void bounce() {
+		if (xPos+size> tank.getLength() || xPos-size < 0) {
+			xVel *= -(StdRandom.uniform(0.7,1.25));
+		} else if (yPos+size> tank.getWidth() || yPos-size < 0) {
+			yVel *= -(StdRandom.uniform(0.7,1.25));;
+		}
+	}
+
+	public void deadMovement() {
+		this.xVel = 0;
+		this.yVel = Math.abs(this.yVel);
+		if (this instanceof Whale) {
+			yVel = 1;
+		}
+
+		if (this.yPos < tank.getWidth()) {
+			this.yPos += this.yVel;
+		}
 	}
 
 	public double getX() {

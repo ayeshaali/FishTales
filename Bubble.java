@@ -5,10 +5,10 @@ public class Bubble extends Pellet{
 		this.outlineColor= StdDraw.BLACK;
 	}
 	public boolean isDead() {
-		if (this.age< this.maxAge) {
-			return false;
-		} else {
+		if (this.yPos >= tank.getWidth()) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 }

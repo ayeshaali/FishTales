@@ -23,11 +23,14 @@ public class FishTank{
 		boolean result1= false;
 		for (int x = 0; x < myStuff.size(); x++) {
 			myStuff.get(x).update();
-			if (myStuff.get(x) instanceof Pellet && myStuff.get(x).isDead()) {
+			//ammonia count
+			if ((myStuff.get(x) instanceof Poison || myStuff.get(x) instanceof Food) && myStuff.get(x).isDead()) {
 				count++;
-			} else if (myStuff.get(x) instanceof Fish && myStuff.get(x).isDead() == false) {
+			} else if (myStuff.get(x) instanceof Fish && (myStuff.get(x).isDead() == false)) {
 				count++;
 			}
+
+			//collision
 			for (int y = 0; y < myStuff.size(); y++) {			
 				if (myStuff.size()> 1 && y != x) {
 					result = myStuff.get(x).hasCollision(myStuff.get(y));
@@ -47,6 +50,7 @@ public class FishTank{
 			this.ammoniaCount = count*2;
 		}
 	}
+
 	public void cleanTheTank(){
 		for (int x = myStuff.size()-1; x>=0; x--) {
 			if (myStuff.get(x).isDead()) {
