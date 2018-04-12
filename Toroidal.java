@@ -1,18 +1,6 @@
 public class Toroidal extends Goldfish{
 	Toroidal(FishTank tank, String name) {
 		super(tank, name);
-		this.maxSpeed = 3;
-		this.maxAge = 20000;
-		this.maxSize = 30; 
-		
-		this.age = 0;
-		this.size = StdRandom.gaussian(this.maxSize/4, 1);
-		this.xVel = StdRandom.gaussian(this.maxSpeed, 1);
-		this.yVel = StdRandom.gaussian(this.maxSpeed, 1);
-		this.xPos = StdRandom.uniform((int)tank.getLength());
-		this.yPos = StdRandom.uniform((int)tank.getWidth());
-		this.fillColor = StdDraw.ORANGE;
-		this.outlineColor = StdDraw.YELLOW;
 	}
 	
 	void move() {

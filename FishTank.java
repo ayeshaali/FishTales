@@ -21,7 +21,7 @@ public class FishTank{
 		int count = 0;
 		boolean result= false; 
 		boolean result1= false;
-		for (int x = 0; x < myStuff.size(); x++) {
+		for (int x =  myStuff.size()-1; x >=0; x--) {
 			myStuff.get(x).update();
 			//ammonia count
 			if ((myStuff.get(x) instanceof Poison || myStuff.get(x) instanceof Food) && myStuff.get(x).isDead()) {
@@ -31,18 +31,21 @@ public class FishTank{
 			}
 
 			//collision
-			for (int y = 0; y < myStuff.size(); y++) {			
+			for (int y = myStuff.size()-1; y >= 0 ; y--) {			
 				if (myStuff.size()> 1 && y != x) {
 					result = myStuff.get(x).hasCollision(myStuff.get(y));
 					if (result == false) {
 						result1 = myStuff.get(y).hasCollision(myStuff.get(x));
 					}
 				}
-
-				if (result || result1) {
-					x = 0; y=0;
-					result= false;
-					result1= false;
+				if (result) {
+					myStuff.remove(y);
+					y = myStuff.size()-1;
+					x = myStuff.size()-1;
+				} else if (result1) {
+					myStuff.remove(x);
+					x = myStuff.size()-1;
+					y = myStuff.size()-1;
 				}
 			}
 		}

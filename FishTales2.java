@@ -1,3 +1,11 @@
+/**
+* FishTales II
+* A simulation of a Fish Tank	
+* Notes:
+*  -EC: Piranhas follow goldfish, bubble extension, speed pellet
+*  -Neat Trick: if you click a fish, the fish will disappear
+* @author Ayesha Ali
+**/
 import java.awt.Color;
 
 public class FishTales2 {
@@ -39,13 +47,19 @@ public class FishTales2 {
 					myTank.add(new Food(myTank, myTank.getWidth(), StdRandom.uniform((int)myTank.getLength())));
 					if (i%5 == 0) {
 						myTank.add(new Poison(myTank, myTank.getWidth(), StdRandom.uniform((int)myTank.getLength())));
+						myTank.add(new Speed(myTank, myTank.getWidth(), StdRandom.uniform((int)myTank.getLength())));
 					}
 				}
 			} else if (StdDraw.isKeyPressed(67)) {
 				System.out.println("Clean the Tank");
 				myTank.cleanTheTank();
 			} else if (StdDraw.mousePressed()) {
-				myTank.add(new Bubble(myTank, StdDraw.mouseY(), StdDraw.mouseX()));
+				while(StdDraw.mousePressed()) {
+					
+				}
+				// for (int i = 0; i < 6; i ++) {
+				 	myTank.add(new Bubble(myTank, StdDraw.mouseY(), StdDraw.mouseX()));
+				// }
 				myTank.tapTheTank();
 				System.out.println("Tap the Tank");
 			}
